@@ -84,6 +84,14 @@ const Numbers = (props) => {
 
 Numbers.list = _.range(1, 10);
 
+const DoneFrame = (props) => {
+  return (
+    <div className="text-center">
+      <h2>{props.doneStatus}</h2>
+    </div>
+  );
+}
+
 class Game extends Component {
   static randomNumber = () => Math.floor(Math.random() * 9) + 1;
   state = {
@@ -91,7 +99,45 @@ class Game extends Component {
     usedNumbers: [],
     numberOfStars: Game.randomNumber(),
     answerIsCorrect: null,
-    redraws: 5
+    redraws: 5,
+    doneStatus: null
+  }
+
+  possibleCombinationSum = (arr, n) => {
+    if (arr.indexOf(n) >= 0) { return true; }
+    if (arr[0] > n) { return false; }
+    if (arr[arr.length - 1] > n) {
+      arr.pop();
+      return this.possibleCombinationSum(arr, n);
+    }
+    var listSize = arr.length, combinationsCount = (1 << listSize)
+    for (var i = 1; i < combinationsCount; i++) {
+      var combinationSum = 0;
+      for (var j = 0; j < listSize; j++) {
+        if (i & (1 << j)) { combinationSum += arr[j]; }
+      }
+      if (n === combinationSum) { return true; }
+    }
+    return false;
+  }
+
+  possibleSolutions = ({ numberOfStars, usedNumbers }) => {
+    const possibleNumbers = _.range(1, 10).filter(number =>
+      usedNumbers.indexOf(number) === -1
+    );
+
+    return this.possibleCombinationSum(possibleNumbers, numberOfStars);
+  }
+
+  updateDoneStatus = () => {
+    this.setState(prevState => {
+      if (prevState.usedNumbers.length === 9) {
+        return { doneStatus: 'Done. Nice!' };
+      }
+      if (prevState.redraw === 0 && !this.possibleSolutions(prevState)) {
+        return { doneStatus: 'Game Over!' };
+      }
+    });
   }
 
   selectNumber = (clickedNumber) => {
@@ -144,7 +190,8 @@ class Game extends Component {
       selectedNumbers,
       usedNumbers,
       answerIsCorrect,
-      redraws
+      redraws,
+      doneStatus
     } = this.state;
     return (
       <div className="container">
@@ -164,10 +211,13 @@ class Game extends Component {
             selectedNumbers={selectedNumbers} />
         </div>
         <br />
-        <Numbers
-          selectNumber={this.selectNumber}
-          usedNumbers={usedNumbers}
-          selectedNumbers={selectedNumbers} />
+        {doneStatus ?
+          <DoneFrame doneStatus={doneStatus} /> :
+          <Numbers
+            selectNumber={this.selectNumber}
+            usedNumbers={usedNumbers}
+            selectedNumbers={selectedNumbers} />
+        }
       </div>
     );
   }
