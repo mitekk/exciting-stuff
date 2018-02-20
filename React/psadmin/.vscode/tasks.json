@@ -1,0 +1,16 @@
+{
+    "version": "0.1.0",
+    "command": "echo",
+    "isShellCommand": true,
+    "args": ["Hello World"],
+    "showOutput": "always",
+    "tasks": [
+		{
+			"taskName": "build",
+            "command": "gulp",
+            "args": ["build"],
+            "isShellCommand": true,
+            "isBuildCommand": true
+		}
+	]
+}
