@@ -1,3 +1,14 @@
+"use strict";
+
+var React = require('react');
+var Router = require('react-router');
+var routes = require('./routes');
+
+Router.run(routes, Router.HistoryLocation, function (Handler) {
+    React.render(<Handler />, document.getElementById('app'));
+});
+
+/*
 $ = jQuery = require('jquery');
 var React = require('react');
 var Home = require('./components/homePage');
@@ -34,3 +45,4 @@ var Authors = require('./components/authors/authorPage');
     window.addEventListener('hashchange', render);
     render();
 })(window);
+*/
