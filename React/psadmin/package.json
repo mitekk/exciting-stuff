@@ -15,11 +15,13 @@
     "gulp-open": "^1.0.0",
     "jquery": "^2.1.4",
     "lodash": "^4.17.5",
+    "object-assign": "^4.1.1",
     "prop-types": "^15.6.0",
     "react": "^0.13.3",
     "react-classes": "^1.1.1",
     "react-router": "^0.13.3",
     "reactify": "^1.1.1",
+    "toastr": "^2.1.0",
     "typescript": "^2.8.0-dev.20180223",
     "vinyl-source-stream": "^1.1.0"
   },
